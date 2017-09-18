@@ -5,10 +5,10 @@ import root2matplot as r2m
 
 
 
-def plot2DH(infile,vars,cut,drawopt = "COLZ"):
+def plot2DH(infile,varss,cut,drawopt = "COLZ"):
   file = root.TFile(infile)
   tree = file.Get("XCDF")
-  tree.Draw(vars,cut,drawopt)
+  tree.Draw(varss,cut,drawopt)
   hist = r2m.Hist2D(tree.GetHistogram())
   hist.colz()
   title = raw_input("Plot Title:")
@@ -19,10 +19,10 @@ def plot2DH(infile,vars,cut,drawopt = "COLZ"):
   plt.ylabel(ylabel)
   plt.show()
   
-def plot1DH(infile,var,cut):
+def plot1DH(infile,varss,cut):
   file = root.TFile(infile)
   tree = file.Get("XCDF")
-  tree.Draw(var,cut)
+  tree.Draw(varss,cut)
   hist2 = r2m.Hist(tree.GetHistogram())
   plt.figure(1,(8,6))
   title = raw_input("Plot Title:")
