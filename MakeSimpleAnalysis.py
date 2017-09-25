@@ -18,7 +18,9 @@ os.system("mkidr %s "%(args.out))
 nBins = len(np.loadtxt(args.cuts,dtype ='str'))
 
 dump = "simple-analysis-dump --outdir %s --source-file %s --cuts-file %s"%(args.out,args.source,args.cuts)
-
+background = ""
+smooth = ""
+significance = ""
 for iBins in range (0,nBins):
   background = background + "simple-analysis-background -o %s -b %i -e 1.0 && "%(args.out,iBins)
   smooth = smooth + "simple-analysis-smooth --outdir %s -b %i -r 0.2 --gauss && "%(args.out,iBins)
