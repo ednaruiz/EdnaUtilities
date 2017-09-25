@@ -15,7 +15,7 @@ args = parser.parse_args()
 
 os.system("mkidr %s "%(args.out))
 
-nBins = len(np.loadtxt(args.cuts))
+nBins = len(np.loadtxt(args.cuts,dtype ='str'))
 
 dump = "simple-analysis-dump --outdir %s --source-file %s --cuts-file %s"%(args.out,args.source,args.cuts)
 
