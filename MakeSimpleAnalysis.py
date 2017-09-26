@@ -13,7 +13,7 @@ parser.add_argument('--weight',help = "Weights file",dest="weight",required = Tr
 
 args = parser.parse_args()
 
-os.system("mkidr %s "%(args.out))
+os.system("mkdir %s "%(args.out))
 
 nBins = len(np.loadtxt(args.cuts,dtype ='str'))
 
