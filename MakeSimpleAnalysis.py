@@ -2,7 +2,7 @@ import os
 import numpy as np
 import argparse
 
-os.system('hawc-sw')
+
 
 parser = argparse.ArgumentParser("Process simple analysis")
 
@@ -15,16 +15,18 @@ args = parser.parse_args()
 
 os.system("mkdir %s "%(args.out))
 
-nBins = len(np.loadtxt(args.cuts,dtype ='str'))
+nBins = len(np.loadtxt(args.cuts,dtype='str'))
 
-dump = "simple-analysis-dump --outdir %s --source-file %s --cuts-file %s"%(args.out,args.source,args.cuts)
+dump = "simple-analysis-dump --outdir %s --source-file %s --cuts-file %s &&"%(args.out,args.source,args.cuts)
+
 background = ""
 smooth = ""
 significance = ""
 for iBins in range (0,nBins):
   background = background + "simple-analysis-background -o %s -b %i -e 1.0 && "%(args.out,iBins)
   smooth = smooth + "simple-analysis-smooth --outdir %s -b %i -r 0.2 --gauss && "%(args.out,iBins)
-  significance = significance + "simple-analysis-significance --outdir %s -b %i -w %s -p && "%(args.out,iBins,args.weight)
-os.system("%s %s %s %s"%(dump,background,smooth,significance))
+  significance = significance + "simple-analysis-significance --outdir %s -b %i -w %s && "%(args.out,iBins,args.weight)
 
-
+final = "%s %s %s %s"%(dump,background,smooth,significance)
+print(final[:-3])
+os.system(final[:-3])
