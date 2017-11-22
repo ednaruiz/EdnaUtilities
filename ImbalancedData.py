@@ -4,7 +4,7 @@ try:
   from XCDF import XCDFFile
   from ROOT import *
 except:
-  print("Some modules were not found, desole")
+  print("Some modules were not found, je suis tres desole")
   
   
 class undersample:
@@ -25,7 +25,7 @@ class undersample:
     for iBin in range (0,len(bining)-1):
       counts.append(len(data[column_name][data[column_name]>bining[iBin] and data[column_name]<bininb[iBin+1]]))
     limit = min(counts)
-    
+    print (limit)
     return under_data
   
   #def plot_raw(self):
