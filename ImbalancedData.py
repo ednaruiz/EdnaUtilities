@@ -6,12 +6,25 @@ try:
 except:
   print("Some modules were not found, je suis tres desole")
   
-  
+
+def read_xcdf(xcdf_file, fields):
+  if not isinstance(fields,list): 
+    raise ValueError("Fields is not a list!")
+  xf = XCDFFile(xcdf_file)
+  nFields = len(fields)
+  lists = [[] for _ in range(nFields)]
+  for record in xf.fields(fields):
+    for iField in len(0,nFields):
+      list[iField].append(record[iField])
+      
+  return lists
+    
+    
 class undersample:
   def __init__(self, data, column_name, bins):
     # we need to say bins, the column_name will be undersample to the content of the bin with less values.
     # bins should be as small as possible, yet, that makes it slower.
-    if isinstance(data, pd.DataFrame)!:
+    if not isinstance(data, pd.DataFrame):
       print("Data is not a pandas DataFrame!")
       break
     
