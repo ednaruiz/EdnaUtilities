@@ -25,8 +25,8 @@ class undersample:
     # we need to say bins, the column_name will be undersample to the content of the bin with less values.
     # bins should be as small as possible, yet, that makes it slower.
     if not isinstance(data, pd.DataFrame):
-      print("Data is not a pandas DataFrame!")
-      break
+      raise ValueError("Data is not a pandas DataFrame!")
+      
     
     # i am very sorry this is going to be so raw and trivial,
     # i hope some day I can make it better
