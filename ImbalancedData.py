@@ -1,7 +1,7 @@
 try:
   import numpy as np
   import pandas as pd
-  from XCDF import XCDFFile
+  from xcdf import XCDFFile
   from ROOT import *
 except:
   print("Some modules were not found, je suis tres desole")
@@ -15,7 +15,7 @@ def read_xcdf(xcdf_file, fields):
   lists = [[] for _ in range(nFields)]
   for record in xf.fields(fields):
     for iField in len(0,nFields):
-      list[iField].append(record[iField])
+      lists[iField].append(record[iField])
       
   return lists
     
