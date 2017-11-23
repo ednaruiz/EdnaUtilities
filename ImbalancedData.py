@@ -7,17 +7,18 @@ except:
   print("Some modules were not found, je suis tres desole")
   
 
-def read_xcdf(xcdf_file, fields,nFields):
+def read_xcdf(xcdf_file, fields,Fields):
   #if not isinstance(fields,list): 
   #  raise ValueError("Fields is not a list!")
   xf = XCDFFile(xcdf_file)
-  nFields = len([fields])
+  nFields = len(Fields)
   lists = [[] for _ in range(nFields)]
   for record in xf.fields(fields):
     for iField in range(0,nFields):
       lists[iField].append(record[iField])
-      
-  return lists
+   
+  data = pd.DataFrame(data = lists, columns = Fields)
+  return data
     
     
 class undersample:
