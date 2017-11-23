@@ -14,7 +14,7 @@ def read_xcdf(xcdf_file, fields,Fields):
   nFields = len(Fields)
   lists = []
   for record in xf.fields(fields):
-      lists.append(record[iField])
+      lists.append(record)
    
   data = pd.DataFrame(data = lists, columns = Fields)
   return data
@@ -36,7 +36,7 @@ class undersample:
     bining = np.linspace(maxv,minv,bins)
     counts = []
     for iBin in range (0,len(bining)-1):
-      counts.append(len(data[column_name][data[column_name]>bining[iBin] and data[column_name]<bininb[iBin+1]]))
+      counts.append(len(data[column_name][data[column_name]>bining[iBin]][data[column_name]<bininb[iBin+1]]))
     limit = min(counts)
     print (limit)
     return under_data
