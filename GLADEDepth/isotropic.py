@@ -1,12 +1,14 @@
-## Brief: set some points for observation and measure the completnes at each distance
-## like a bullet through an onion, yummy
+#  Brief: set some points for observation and measure the completnes at each distance
+# like a bullet through an onion, yummy
 
+import matplotlib.pyplot as plt
+import random as random
 import pandas as pd
-import matplotlib.pyplot as pd
-import astropy as astro
-
+import numpy as np
 
 class GLADECatalog:
+    global degtorad
+    degtorad = np.pi/180.
     def __init__(self):
         # infile is for now the txt ascii catalog of glade
         infile = "GLADE_2.2.txt"
@@ -27,16 +29,51 @@ class GLADECatalog:
      
     def visualize_shells(self,min_dist,max_dist):
     
-        fig = plt.figure()
+        fig = plt.figure(figsize=(9,6))
         ax1= fig.add_subplot(111)
-        ax1.set_title("GLADE for %f to %f Mpc distance"%(min_dist,max_dist))
+        ax1.set_title("GLADE for %0.1f to %0.1f Mpc distance"%(min_dist,max_dist))
         ax1.hexbin(self.GLADE['RA'][self.GLADE["dist"]>min_dist][self.GLADE["dist"]<max_dist],self.GLADE['dec'][self.GLADE["dist"]>min_dist][self.GLADE["dist"]<max_dist])
         ax1.set_xlabel("ra [deg]")
         ax1.set_ylabel("dec [deg]")
-        plt.show()
+        plt.savefig("cipolla%f-%f.png"%(min_dist,max_dist))
 
-    def count_galaxies(ra,dec,min_dist,max_dist):
-        rFoV = 2.5 #CT5 field of view, but whatever actually...
+    def count_galaxies(self,ra,dec,min_dist,max_dist):
+        
+        rFoV = 5. #CT5 field of view, but whatever actually...
         Ra = self.GLADE['RA'][self.GLADE["dist"]>min_dist][self.GLADE["dist"]<max_dist]
         Dec = self.GLADE['dec'][self.GLADE["dist"]>min_dist][self.GLADE["dist"]<max_dist]
+
+        gamma = np.sqrt( ((ra-Ra)*np.cos(dec*degtorad))**2 + (dec - Dec)**2)
+        gammain = gamma<rFoV
+
+        return len(gammain[gammain == True])
+
+
+a = GLADECatalog()
+
+rand_ra = []
+rand_dec = []
+
+D = np.arange(0,300,5)
+
+Count = []
+for iDist in range (0,len(D)):
+    cD = []
+    for j in range (50):
+        rra = float(random.randrange(0,360,1)+random.random())
+        rdec = random.randrange(-180,180,1)+random.random()
+        print(rra,rdec)
+        rand_ra.append(rra)
+        rand_dec.append(rdec)
+        
+        n = a.count_galaxies(ra = rra,dec = rdec, min_dist = D[iDist], max_dist = D[iDist]+5 )
+        
+        cD.append(n)
+    print(np.asarray(cD))
+    Count.append(cD)
+
+
+plt.plot(D,np.std(Count,axis=1))
+plt.show()
+
 
