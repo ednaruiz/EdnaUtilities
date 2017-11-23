@@ -7,14 +7,14 @@ except:
   print("Some modules were not found, je suis tres desole")
   
 
-def read_xcdf(xcdf_file, fields):
-  if not isinstance(fields,list): 
-    raise ValueError("Fields is not a list!")
+def read_xcdf(xcdf_file, fields,nFields):
+  #if not isinstance(fields,list): 
+  #  raise ValueError("Fields is not a list!")
   xf = XCDFFile(xcdf_file)
-  nFields = len(fields)
+  nFields = len([fields])
   lists = [[] for _ in range(nFields)]
   for record in xf.fields(fields):
-    for iField in len(0,nFields):
+    for iField in range(0,nFields):
       lists[iField].append(record[iField])
       
   return lists
