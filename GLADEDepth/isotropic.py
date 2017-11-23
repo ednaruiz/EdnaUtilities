@@ -1,5 +1,5 @@
 ## Brief: set some points for observation and measure the completnes at each distance
-## like a bullet in a onion
+## like a bullet through an onion, yummy
 
 import pandas as pd
 import matplotlib.pyplot as pd
@@ -35,4 +35,8 @@ class GLADECatalog:
         ax1.set_ylabel("dec [deg]")
         plt.show()
 
+    def count_galaxies(ra,dec,min_dist,max_dist):
+        rFoV = 2.5 #CT5 field of view, but whatever actually...
+        Ra = self.GLADE['RA'][self.GLADE["dist"]>min_dist][self.GLADE["dist"]<max_dist]
+        Dec = self.GLADE['dec'][self.GLADE["dist"]>min_dist][self.GLADE["dist"]<max_dist]
 
