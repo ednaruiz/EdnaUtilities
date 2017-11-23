@@ -12,10 +12,9 @@ def read_xcdf(xcdf_file, fields,Fields):
   #  raise ValueError("Fields is not a list!")
   xf = XCDFFile(xcdf_file)
   nFields = len(Fields)
-  lists = [[] for _ in range(nFields)]
+  lists = []
   for record in xf.fields(fields):
-    for iField in range(0,nFields):
-      lists[iField].append(record[iField])
+      lists.append(record[iField])
    
   data = pd.DataFrame(data = lists, columns = Fields)
   return data
