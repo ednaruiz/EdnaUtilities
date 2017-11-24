@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 import random as random
 import pandas as pd
 import numpy as np
+from astropy.cosmology import WMAP9 as cosmo
+from astropy import constants as const
+
 
 class GLADECatalog:
     global degtorad
@@ -39,7 +42,7 @@ class GLADECatalog:
 
     def count_galaxies(self,ra,dec,min_dist,max_dist):
         
-        rFoV = 5. #CT5 field of view, but whatever actually...
+        rFoV = 2.5 #CT5 field of view, but whatever actually...
         Ra = self.GLADE['RA'][self.GLADE["dist"]>min_dist][self.GLADE["dist"]<max_dist]
         Dec = self.GLADE['dec'][self.GLADE["dist"]>min_dist][self.GLADE["dist"]<max_dist]
 
@@ -57,23 +60,56 @@ rand_dec = []
 D = np.arange(0,300,5)
 
 Count = []
+
+for j in range (200):
+        rra = float(random.randrange(0,360,1)+random.random())
+        rdec = random.randrange(-180,180,1)+random.random()
+        #print(rra,rdec)
+        rand_ra.append(rra)
+        rand_dec.append(rdec)
+
 for iDist in range (0,len(D)):
     cD = []
     for j in range (50):
-        rra = float(random.randrange(0,360,1)+random.random())
-        rdec = random.randrange(-180,180,1)+random.random()
-        print(rra,rdec)
-        rand_ra.append(rra)
-        rand_dec.append(rdec)
-        
-        n = a.count_galaxies(ra = rra,dec = rdec, min_dist = D[iDist], max_dist = D[iDist]+5 )
+        n = a.count_galaxies(ra = rand_ra[j],dec = rand_dec[j], min_dist = D[iDist], max_dist = D[iDist]+5 )
         
         cD.append(n)
-    print(np.asarray(cD))
+    #print(np.asarray(cD))
     Count.append(cD)
 
 
-plt.plot(D,np.std(Count,axis=1))
+totales = []
+for k in Count:
+    totales.append(sum(k))
+
+
+redshift = D*cosmo.H(0)/const.c.to('km/s')
+
+AS = 4./3. * np.pi*D**2
+
+f = plt.figure()
+plt.subplots_adjust(hspace = 0.001)
+
+ax1 = plt.subplot(211)
+ax1.plot(D,np.std(Count,axis=1))
+ax1.set_xlabel("Distance [Mpc]")
+ax1.set_ylabel("Std number of galaxies")
+
+ax3 = ax1.twiny()
+A= [30,60,120,180,240,300]
+ax3.set_xticks(A)
+Az = np.array(A*cosmo.H(0)/const.c.to('km/s'))
+ax3.set_xticklabels(["{:.2e}".format(a) for a in Az])
+ax3.set_xlabel("redshift z")
+CV = np.std(Count,axis=1)/np.mean(Count,axis=1)
+ax2 = plt.subplot(212,sharex = ax1)
+ax2.plot(D,CV/(AS*max(CV)))
+ax2.plot(D,CV/(max(CV)))
+ax2.set_xlabel("Distance [Mpc]")
+ax2.set_ylabel("CV number of galaxies")
+
+
+xticklabels = ax1.get_xticklabels() + ax2.get_xticklabels()
+plt.setp(xticklabels, visible=True)
+
 plt.show()
-
-
