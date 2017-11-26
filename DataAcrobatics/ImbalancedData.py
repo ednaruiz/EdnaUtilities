@@ -54,3 +54,5 @@ def undersample(data, column_name, bins):
   
   #def plot_undersampled(self):
     
+def knearest(k,data,columnname):
+  
